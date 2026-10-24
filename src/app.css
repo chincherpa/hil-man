@@ -52,6 +52,31 @@ button {
   cursor: pointer;
 }
 
+:root[data-theme="light"] {
+  --bg: #f4f5f8;
+  --bg-elev-1: #ffffff;
+  --bg-elev-2: #f0f1f5;
+  --bg-elev-3: #e4e7ee;
+  --border: #d5d9e2;
+  --border-soft: #e2e5ec;
+
+  --text: #1a1d26;
+  --text-dim: #5b6172;
+  --text-faint: #9aa0b0;
+
+  --accent: #7a8094;
+  --accent-dim: #9aa0b0;
+  --accent-bg: rgba(122, 128, 148, 0.14);
+
+  --warn: #b7791f;
+  --warn-bg: rgba(183, 121, 31, 0.1);
+
+  --danger: #d64545;
+  --ok: #7a8094;
+
+  color-scheme: light;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;

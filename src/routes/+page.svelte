@@ -1,28 +1,40 @@
 <script>
+  import { onMount } from "svelte";
+  import { getCurrentWindow } from "@tauri-apps/api/window";
   import TitleBar from "$lib/components/TitleBar.svelte";
   import ProcessPanel from "$lib/components/ProcessPanel.svelte";
-  import ControlPanel from "$lib/components/ControlPanel.svelte";
-  import FeaturesPanel from "$lib/components/FeaturesPanel.svelte";
-  import ConsolePanel from "$lib/components/ConsolePanel.svelte";
+  import SignalsPanel from "$lib/components/SignalsPanel.svelte";
+  import FlyoutMenu from "$lib/components/FlyoutMenu.svelte";
   import StatusBar from "$lib/components/StatusBar.svelte";
+  import EventLogSidebar from "$lib/components/EventLogSidebar.svelte";
+  import { initFlyout } from "$lib/flyout.js";
+
+  // Gleiche index.html für beide Windows, Label entscheidet welche Ansicht
+  const isFlyout = getCurrentWindow().label === "flyout";
+
+  onMount(() => {
+    if (isFlyout) initFlyout();
+  });
 </script>
 
-<div class="app">
-  <TitleBar />
+{#if isFlyout}
+  <FlyoutMenu />
+{:else}
+  <div class="app">
+    <TitleBar />
 
-  <main class="content">
-    <ProcessPanel />
+    <div class="body">
+      <main class="content">
+        <ProcessPanel />
+        <SignalsPanel />
+      </main>
 
-    <div class="middle-row">
-      <div class="control-col"><ControlPanel /></div>
-      <div class="features-col"><FeaturesPanel /></div>
+      <EventLogSidebar />
     </div>
 
-    <ConsolePanel />
-  </main>
-
-  <StatusBar />
-</div>
+    <StatusBar />
+  </div>
+{/if}
 
 <style>
   .app {
@@ -31,27 +43,21 @@
     height: 100vh;
   }
 
-  .content {
+  .body {
     flex: 1;
+    min-height: 0;
+    display: flex;
+  }
+
+  .content {
+    position: relative;
+    flex: 1;
+    min-width: 0;
     min-height: 0;
     display: flex;
     flex-direction: column;
     gap: 12px;
     padding: 12px;
     overflow: hidden;
-  }
-
-  .middle-row {
-    display: flex;
-    gap: 12px;
-    flex-shrink: 0;
-  }
-
-  .control-col {
-    flex: 2.1;
-  }
-
-  .features-col {
-    flex: 1;
   }
 </style>

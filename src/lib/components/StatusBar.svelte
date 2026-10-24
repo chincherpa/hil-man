@@ -1,21 +1,47 @@
 <script>
-  import { statusItems } from "$lib/data.js";
+  import { invoke } from '@tauri-apps/api/core';
+  import { onMount } from 'svelte';
+
+  let hilName = '';
+  let time = '';
+
+  async function loadHilName() {
+    try {
+      /** @type {{ section: string, key: string, value: string }[]} */
+      const entries = await invoke('get_settings');
+      hilName = entries.find((e) => e.section === 'Katana' && e.key === 'hil_name')?.value ?? '';
+    } catch (err) {
+      console.error('Failed to load settings:', err);
+    }
+  }
+
+  onMount(async () => {
+    await loadHilName();
+    window.addEventListener('settings-changed', loadHilName);
+
+    const updateTime = () => {
+      const now = new Date();
+      const formatter = new Intl.DateTimeFormat('de-DE', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
+      time = formatter.format(now);
+    };
+
+    updateTime();
+    setInterval(updateTime, 1000);
+  });
 </script>
 
 <footer class="statusbar">
-  <div class="left">
-    {#each statusItems as item}
-      {#if item.kind === "badge"}
-        <span class="badge">{item.label}</span>
-      {:else if item.kind === "dot-ok"}
-        <span class="item"><span class="dot ok"></span>{item.label}</span>
-      {:else}
-        <span class="item">{item.label}</span>
-      {/if}
-    {/each}
-  </div>
+  <div class="left">{hilName}</div>
   <div class="right">
     <span class="badge warn">DEVELOPMENT</span>
+    <span class="time">{time}</span>
   </div>
 </footer>
 
@@ -33,28 +59,18 @@
     flex-shrink: 0;
   }
 
-  .left,
+  .left {
+    flex: 0 0 auto;
+  }
+
   .right {
     display: flex;
     align-items: center;
     gap: 14px;
   }
 
-  .item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-
-  .dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-  }
-
-  .dot.ok {
-    background: var(--ok);
-    box-shadow: 0 0 4px var(--ok);
+  .time {
+    white-space: nowrap;
   }
 
   .badge {

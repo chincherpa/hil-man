@@ -12,6 +12,7 @@
   "app": {
     "windows": [
       {
+        "label": "main",
         "title": "HilManager",
         "width": 900,
         "height": 660,
@@ -19,6 +20,21 @@
         "minHeight": 560,
         "decorations": false,
         "transparent": false
+      },
+      {
+        "label": "flyout",
+        "parent": "main",
+        "title": "HilManager Menü",
+        "url": "index.html",
+        "width": 18,
+        "height": 48,
+        "decorations": false,
+        "transparent": true,
+        "resizable": false,
+        "shadow": false,
+        "skipTaskbar": true,
+        "focus": false,
+        "visible": false
       }
     ],
     "security": {

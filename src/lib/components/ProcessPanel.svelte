@@ -34,7 +34,7 @@
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 7px;
   }
 
@@ -42,6 +42,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    max-width: 220px;
     background: var(--bg-elev-2);
     border: 1px solid var(--border-soft);
     border-radius: var(--radius-sm);

@@ -2,7 +2,7 @@
   import { getCurrentWindow } from "@tauri-apps/api/window";
   import Icon from "./Icon.svelte";
   import SettingsModal from "./SettingsModal.svelte";
-  import { THEMES, readStoredTheme, applyTheme, persistTheme } from "$lib/themes.js";
+  import { THEMES, readStoredTheme, applyTheme, persistTheme, broadcastTheme } from "$lib/themes.js";
 
   const appWindow = getCurrentWindow();
 
@@ -19,6 +19,7 @@
     theme = next;
     applyTheme(next);
     persistTheme(next);
+    broadcastTheme(next);
   }
 
   /** @param {KeyboardEvent} e */

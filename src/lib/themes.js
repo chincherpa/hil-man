@@ -1,3 +1,7 @@
+import { emit } from "@tauri-apps/api/event";
+
+export const THEME_EVENT = "theme-changed";
+
 export const THEMES = [
   { id: "dark", label: "Dunkel" },
   { id: "light", label: "Hell" },
@@ -34,5 +38,14 @@ export function persistTheme(id) {
     localStorage.setItem("theme", id);
   } catch {
     // storage blocked -> theme still applies for this session
+  }
+}
+
+/** Andere Tauri-Fenster (z.B. Flyout) über Themewechsel benachrichtigen. @param {string} id */
+export async function broadcastTheme(id) {
+  try {
+    await emit(THEME_EVENT, id);
+  } catch {
+    // kein Tauri-Kontext (z.B. plain Browser-Dev) -> andere Fenster existieren eh nicht
   }
 }

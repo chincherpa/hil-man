@@ -1,6 +1,6 @@
 import { getCurrentWindow, LogicalSize, PhysicalPosition, Window } from "@tauri-apps/api/window";
 import { listen } from "@tauri-apps/api/event";
-import { readStoredTheme, applyTheme, THEME_EVENT } from "$lib/themes.js";
+import { readStoredTheme, applyTheme, normalizeTheme, THEME_EVENT } from "$lib/themes.js";
 
 export const TAB_WIDTH = 18;
 export const MENU_WIDTH = 200;
@@ -32,22 +32,64 @@ export async function resizeFlyout(w, h) {
   await place();
 }
 
-/** Nur im Flyout-Window aufrufen */
+/**
+ * Führt fn aus und loggt Fehler, statt sie weiterzuwerfen.
+ * @param {string} what
+ * @param {() => Promise<void>} fn
+ */
+async function attempt(what, fn) {
+  try {
+    await fn();
+  } catch (err) {
+    console.error(what, err);
+  }
+}
+
+/**
+ * Nur im Flyout-Window aufrufen
+ * @returns {Promise<() => void>} Cleanup, entfernt alle Listener
+ */
 export async function initFlyout() {
+  /** @type {(() => void)[]} */
+  const unlisteners = [];
+  const cleanup = () => {
+    for (const fn of unlisteners.splice(0)) {
+      try {
+        fn();
+      } catch (err) {
+        console.error("Listener entfernen fehlgeschlagen", err);
+      }
+    }
+  };
+
   document.documentElement.style.background = "transparent";
   document.body.style.background = "transparent";
 
-  applyTheme(readStoredTheme());
+  try {
+    // localStorage ist nicht reaktiv zwischen Fenstern -> Theme-Wechsel kommt per Tauri-Event.
+    // Listener vor dem Lesen registrieren, sonst geht ein Wechsel dazwischen verloren.
+    await attempt("Theme-Listener fehlgeschlagen", async () => {
+      unlisteners.push(
+        await listen(THEME_EVENT, (e) => applyTheme(normalizeTheme(/** @type {string} */ (e.payload)))),
+      );
+    });
+    applyTheme(readStoredTheme());
 
-  // localStorage ist nicht reaktiv zwischen Fenstern -> Theme-Wechsel kommt per Tauri-Event
-  await listen(THEME_EVENT, (e) => applyTheme(/** @type {string} */ (e.payload)));
+    // Fehler bei der Platzierung dürfen das Anzeigen des Flyouts nicht verhindern.
+    await attempt("Flyout-Platzierung fehlgeschlagen", async () => {
+      main = await Window.getByLabel("main");
+      if (!main) return;
+      unlisteners.push(await main.onMoved(place));
+      unlisteners.push(await main.onResized(place));
+      // Windows clampt beim Erzeugen auf Mindestbreite (136px), daher Größe nachträglich setzen
+      await resizeFlyout(TAB_WIDTH, TAB_HEIGHT);
+    });
 
-  main = await Window.getByLabel("main");
-  if (!main) return;
-
-  await main.onMoved(place);
-  await main.onResized(place);
-  // Windows clampt beim Erzeugen auf Mindestbreite (136px), daher Größe nachträglich setzen
-  await resizeFlyout(TAB_WIDTH, TAB_HEIGHT);
-  await self.show();
+    await self.show();
+    return cleanup;
+  } catch (err) {
+    // Bereits registrierte Listener nicht verwaisen lassen
+    cleanup();
+    throw err;
+  }
 }

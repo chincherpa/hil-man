@@ -13,7 +13,15 @@
   const isFlyout = getCurrentWindow().label === "flyout";
 
   onMount(() => {
-    if (isFlyout) initFlyout();
+    if (!isFlyout) return;
+    // Cleanup erst ausführen, wenn die Initialisierung abgeschlossen ist (auch bei Unmount davor)
+    const init = initFlyout().catch((err) => {
+      console.error("Flyout-Init fehlgeschlagen", err);
+      return () => {};
+    });
+    return () => {
+      init.then((cleanup) => cleanup());
+    };
   });
 </script>
 

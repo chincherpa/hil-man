@@ -37,11 +37,11 @@
             <span class="time">{time(ev.ts)}</span>
             <span class="tag">{ev.tag}</span>
           </div>
-          <div class="label" title={ev.label}>{ev.label}</div>
+          <div class="label" title={ev.path ? `${ev.label}
+${ev.path}` : ev.label}>{ev.label}</div>
           {#if ev.context}
             <div class="context">{ev.context}</div>
           {/if}
-          <div class="path" title={ev.path}>{ev.path}</div>
         </li>
       {:else}
         <li class="empty">Noch keine Klicks</li>
@@ -168,14 +168,6 @@
   .context {
     color: var(--text-dim);
     font-size: 10.5px;
-  }
-
-  .path {
-    color: var(--text-faint);
-    font-size: 10px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
 
   .empty {

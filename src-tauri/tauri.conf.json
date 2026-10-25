@@ -5,7 +5,7 @@
   "identifier": "com.lulef.hil-manager",
   "build": {
     "beforeDevCommand": "pnpm run dev",
-    "devUrl": "http://localhost:1420",
+    "devUrl": "http://localhost:1430",
     "beforeBuildCommand": "pnpm run build",
     "frontendDist": "../build"
   },

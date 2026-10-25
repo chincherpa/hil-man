@@ -1,6 +1,6 @@
 // Static placeholder data — wiring to real backend commands follows later.
 
-export const processButtons = ["ControlDesk", "Diagnosis", "EXAM", "FEA", "VR", "Overview"];
+export const processButtons = ["ControlDesk", "Diagnosis", "EXAM", "FEA", "VR", "RSI", "Overview"];
 
 export const processDialogButtons = ["Start", "Stopp", "Status prüfen", "Protokoll", "Konfiguration", "Export"];
 

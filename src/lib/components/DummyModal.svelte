@@ -98,6 +98,12 @@
       </div>
 
       <section class="empty"></section>
+    {:else if title === "RSI"}
+      <div class="grid">
+        <button class="cell">test RSI</button>
+      </div>
+
+      <section class="empty"></section>
     {:else}
       <div class="grid">
         {#each processDialogButtons as label}

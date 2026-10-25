@@ -7,11 +7,6 @@
 </script>
 
 <section class="panel" data-no-log>
-  <div class="panel-header">
-    <span class="dot-icon"></span>
-    <h2>Prozesse</h2>
-  </div>
-
   <div class="grid">
     {#each processButtons as label}
       <button class="cell" onclick={() => (openLabel = label)}>

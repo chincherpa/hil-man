@@ -1,6 +1,9 @@
 {
   "Katana": {
     "hil_name": "K-HiL_00_TestLutz",
+    "test1": "K-HiL_00_TestLutz",
+    "test2": "K-HiL_00_TestLutz",
+    "test9999": "K-HiL_00_TestLutz",
     "pdx_file": "pdx_123.FULL",
     "vr_folder": "K_HiL_00_TestLutz"
   }

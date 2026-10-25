@@ -24,8 +24,7 @@
       </span>
     </button>
     {#if !collapsed}
-      <span class="dot-icon"></span>
-      <h2>Event-Log</h2>
+      <h2>Log</h2>
       <span class="count">{eventLog.length}</span>
     {/if}
   </div>

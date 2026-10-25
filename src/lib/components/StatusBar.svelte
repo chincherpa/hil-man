@@ -40,7 +40,6 @@
 <footer class="statusbar">
   <div class="left">{hilName}</div>
   <div class="right">
-    <span class="badge warn">DEVELOPMENT</span>
     <span class="time">{time}</span>
   </div>
 </footer>

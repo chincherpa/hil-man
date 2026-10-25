@@ -56,7 +56,6 @@
     </span>
     <span class="title">HilManager</span>
     <span class="version">v0.0.1</span>
-    <span class="dev-badge"><span class="dot"></span>DEV</span>
   </div>
 
   <div class="actions">

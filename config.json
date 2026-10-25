@@ -1,10 +1,9 @@
 {
   "Katana": {
     "hil_name": "K-HiL_00_TestLutz",
-    "test1": "K-HiL_00_TestLutz",
-    "test2": "K-HiL_00_TestLutz",
-    "test9999": "K-HiL_00_TestLutz",
+    "fea_folder": "K_HiL_00_TestLutz",
     "pdx_file": "pdx_123.FULL",
+    "cluu_tb_config": "76rfvbnk-654edfg-65trghu7z6-rtz765t",
     "vr_folder": "K_HiL_00_TestLutz"
   }
 }

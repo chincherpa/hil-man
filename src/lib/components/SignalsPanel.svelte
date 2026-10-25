@@ -91,8 +91,8 @@
   }
 
   .led.green {
-    background: #3fb950;
-    box-shadow: 0 0 6px #3fb950;
+    background: var(--led-ok);
+    box-shadow: var(--led-ok-glow);
   }
 
   .led.red {

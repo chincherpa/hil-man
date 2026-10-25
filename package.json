@@ -1,6 +1,6 @@
 {
   "name": "hil-manager",
-  "version": "0.1.0",
+  "version": "0.0.2",
   "description": "",
   "type": "module",
   "packageManager": "pnpm@12.11.2",

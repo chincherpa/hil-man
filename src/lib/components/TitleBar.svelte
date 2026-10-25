@@ -2,37 +2,28 @@
   import { getCurrentWindow } from "@tauri-apps/api/window";
   import Icon from "./Icon.svelte";
   import SettingsModal from "./SettingsModal.svelte";
+  import { THEMES, readStoredTheme, applyTheme, persistTheme } from "$lib/themes.js";
 
   const appWindow = getCurrentWindow();
 
-  /** @type {"dark" | "light"} */
-  let theme = $state(readTheme());
+  const initialTheme = readStoredTheme();
+
+  let theme = $state(initialTheme);
   let settingsOpen = $state(false);
+  let themePickerOpen = $state(false);
 
-  document.documentElement.dataset.theme = theme;
+  applyTheme(initialTheme);
 
-  /** @returns {"dark" | "light"} */
-  function readTheme() {
-    try {
-      return localStorage.getItem("theme") === "light" ? "light" : "dark";
-    } catch {
-      return "dark";
-    }
-  }
-
-  /** @param {"dark" | "light"} next */
+  /** @param {string} next */
   function setTheme(next) {
     theme = next;
-    document.documentElement.dataset.theme = next;
-    try {
-      localStorage.setItem("theme", next);
-    } catch {
-      // storage blocked -> theme still applies for this session
-    }
+    applyTheme(next);
+    persistTheme(next);
   }
 
-  function toggleTheme() {
-    setTheme(theme === "dark" ? "light" : "dark");
+  /** @param {KeyboardEvent} e */
+  function onPickerKeydown(e) {
+    if (e.key === "Escape") themePickerOpen = false;
   }
 
   function minimize() {
@@ -49,13 +40,10 @@
 <header class="titlebar" data-tauri-drag-region>
   <div class="brand" data-tauri-drag-region>
     <span class="logo">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-        <circle cx="9" cy="12" r="6" stroke="#2dd9c8" stroke-width="2" />
-        <circle cx="15" cy="12" r="6" stroke="#1f9d91" stroke-width="2" />
-      </svg>
+      <img src="/logo.png" alt="HilManager" width="20" height="20" />
     </span>
     <span class="title">HilManager</span>
-    <span class="version">v0.0.1</span>
+    <span class="version">v0.0.2</span>
   </div>
 
   <div class="actions">
@@ -63,9 +51,22 @@
       <Icon name="settings" size={16} />
     </button>
 
-    <button class="icon-btn" title={theme === "dark" ? "Helles Design" : "Dunkles Design"} data-no-log onclick={toggleTheme}>
-      <Icon name="sun" size={16} />
-    </button>
+    <div class="theme-picker">
+      <button class="icon-btn" title="Design wählen" data-no-log onclick={() => (themePickerOpen = !themePickerOpen)}>
+        <Icon name="palette" size={16} />
+      </button>
+
+      {#if themePickerOpen}
+        <div class="theme-popover-backdrop" role="presentation" onclick={() => (themePickerOpen = false)}></div>
+        <div class="theme-popover" role="menu">
+          {#each THEMES as t (t.id)}
+            <button role="menuitem" class:selected={theme === t.id} onclick={() => { setTheme(t.id); themePickerOpen = false; }}>
+              {t.label}
+            </button>
+          {/each}
+        </div>
+      {/if}
+    </div>
 
     <span class="divider"></span>
 
@@ -78,6 +79,8 @@
 {#if settingsOpen}
   <SettingsModal {theme} onthemechange={setTheme} onclose={() => (settingsOpen = false)} />
 {/if}
+
+<svelte:window onkeydown={onPickerKeydown} />
 
 <style>
   .titlebar {
@@ -103,6 +106,10 @@
     align-items: center;
   }
 
+  .logo img {
+    object-fit: contain;
+  }
+
   .title {
     font-weight: 600;
     font-size: 14px;
@@ -112,27 +119,6 @@
   .version {
     font-size: 11px;
     color: var(--text-faint);
-  }
-
-  .dev-badge {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    color: var(--warn);
-    background: var(--warn-bg);
-    border: 1px solid rgba(232, 162, 61, 0.3);
-    border-radius: 999px;
-    padding: 2px 8px;
-  }
-
-  .dev-badge .dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--warn);
   }
 
   .actions {
@@ -163,6 +149,51 @@
     height: 18px;
     background: var(--border);
     margin: 0 8px;
+  }
+
+  .theme-picker {
+    position: relative;
+  }
+
+  .theme-popover-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+  }
+
+  .theme-popover {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    z-index: 101;
+    display: flex;
+    flex-direction: column;
+    min-width: 140px;
+    padding: 4px;
+    background: var(--bg-elev-2);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  }
+
+  .theme-popover button {
+    text-align: left;
+    padding: 6px 8px;
+    border: none;
+    background: transparent;
+    color: var(--text-dim);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+  }
+
+  .theme-popover button:hover {
+    background: var(--bg-elev-3);
+    color: var(--text);
+  }
+
+  .theme-popover button.selected {
+    color: var(--text);
+    font-weight: 600;
   }
 
   .win-btn {

@@ -72,20 +72,4 @@
     white-space: nowrap;
   }
 
-  .badge {
-    font-size: 9.5px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    color: var(--text-dim);
-    background: var(--bg-elev-3);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 1px 7px;
-  }
-
-  .badge.warn {
-    color: var(--warn);
-    background: var(--warn-bg);
-    border-color: rgba(232, 162, 61, 0.3);
-  }
 </style>

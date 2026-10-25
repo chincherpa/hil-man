@@ -1,4 +1,5 @@
 import { getCurrentWindow, LogicalSize, PhysicalPosition, Window } from "@tauri-apps/api/window";
+import { readStoredTheme, applyTheme } from "$lib/themes.js";
 
 export const TAB_WIDTH = 18;
 export const MENU_WIDTH = 200;
@@ -35,11 +36,13 @@ export async function initFlyout() {
   document.documentElement.style.background = "transparent";
   document.body.style.background = "transparent";
 
-  try {
-    document.documentElement.dataset.theme = localStorage.getItem("theme") === "light" ? "light" : "dark";
-  } catch {
-    document.documentElement.dataset.theme = "dark";
-  }
+  applyTheme(readStoredTheme());
+
+  // localStorage wird pro Fenster nicht reaktiv beobachtet -> "storage" Event
+  // feuert nur in ANDEREN gleich-origin Fenstern, wenn main das Theme ändert
+  window.addEventListener("storage", (e) => {
+    if (e.key === "theme") applyTheme(readStoredTheme());
+  });
 
   main = await Window.getByLabel("main");
   if (!main) return;

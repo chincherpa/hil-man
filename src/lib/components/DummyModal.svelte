@@ -120,7 +120,7 @@
   .backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.55);
+    background: var(--overlay);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -219,9 +219,9 @@
   }
 
   .led.on {
-    background: #3fb950;
-    border-color: #3fb950;
-    box-shadow: 0 0 6px #3fb950;
+    background: var(--led-ok);
+    border-color: var(--led-ok);
+    box-shadow: var(--led-ok-glow);
   }
 
   .empty {
@@ -264,7 +264,7 @@
   }
 
   .error {
-    color: #f85149;
+    color: var(--danger);
   }
 
   @keyframes spin {

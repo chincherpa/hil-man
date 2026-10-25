@@ -26,8 +26,6 @@
 
 <aside class="flyout">
   <div class="panel" class:open bind:this={panel}>
-    <h2>Menü</h2>
-
     {#each clamps as item}
       <button class="row" onclick={() => press(item)}>
         <span class="led" class:on={item.on}></span>
@@ -62,23 +60,25 @@
     width: 200px;
     flex-shrink: 0;
     background: var(--bg-elev-1);
-    border: 1px solid var(--text-faint);
+    border: 2px solid var(--text-faint);
     border-radius: var(--radius-lg);
-    padding: 14px 12px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     gap: 7px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
     opacity: 0;
     visibility: hidden;
+    transform: translateX(16px);
     transition:
-      opacity 0.2s ease,
-      visibility 0.2s;
+      opacity 0.5s ease,
+      transform 1s cubic-bezier(0.2, 0.8, 0.2, 1),
+      visibility 9s;
   }
 
   .panel.open {
     opacity: 1;
     visibility: visible;
+    transform: translateX(0);
   }
 
   h2 {
@@ -128,9 +128,9 @@
   }
 
   .led.on {
-    background: #3fb950;
-    border-color: #3fb950;
-    box-shadow: 0 0 6px #3fb950;
+    background: var(--led-ok);
+    border-color: var(--led-ok);
+    box-shadow: var(--led-ok-glow);
   }
 
   .tab {

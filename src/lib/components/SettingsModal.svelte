@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { invoke } from "@tauri-apps/api/core";
   import Icon from "./Icon.svelte";
+  import { THEMES } from "$lib/themes.js";
 
   let { theme, onthemechange, onclose } = $props();
 
@@ -74,8 +75,9 @@
         <div class="row">
           <span class="label">Erscheinungsbild</span>
           <div class="segmented">
-            <button class:selected={theme === "dark"} onclick={() => onthemechange("dark")}>Dunkel</button>
-            <button class:selected={theme === "light"} onclick={() => onthemechange("light")}>Hell</button>
+            {#each THEMES as t (t.id)}
+              <button class:selected={theme === t.id} onclick={() => onthemechange(t.id)}>{t.label}</button>
+            {/each}
           </div>
         </div>
       </section>
@@ -105,7 +107,7 @@
     </div>
 
     <footer class="footer">
-      <span class="version">v0.0.1</span>
+      <span class="version">v0.0.2</span>
       {#if error}<span class="error">{error}</span>{/if}
       <button class="save" disabled={saving || dirty.length === 0} onclick={save}>
         Speichern{dirty.length > 0 ? ` (${dirty.length})` : ""}
@@ -118,7 +120,7 @@
   .backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.55);
+    background: var(--overlay);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -297,7 +299,7 @@
 
   .error {
     flex: 1;
-    color: #f85149;
+    color: var(--danger);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

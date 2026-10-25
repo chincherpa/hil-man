@@ -21,6 +21,10 @@
   --danger: #e05d5d;
   --ok: #5a6072;
 
+  --led-ok: #3fb950;
+  --led-ok-glow: 0 0 6px #3fb950;
+  --overlay: rgba(0, 0, 0, 0.55);
+
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 14px;
@@ -75,6 +79,107 @@ button {
   --ok: #7a8094;
 
   color-scheme: light;
+}
+
+:root[data-theme="midnight"] {
+  --bg: #0b1320;
+  --bg-elev-1: #101b2e;
+  --bg-elev-2: #16233a;
+  --bg-elev-3: #1d2d47;
+  --border: #28395a;
+  --border-soft: #22304d;
+
+  --text: #e3ecf7;
+  --text-dim: #93a8c7;
+  --text-faint: #5e7295;
+
+  --accent: #3fa9f5;
+  --accent-dim: #2f80c0;
+  --accent-bg: rgba(63, 169, 245, 0.16);
+
+  --warn: #e8a23d;
+  --warn-bg: rgba(232, 162, 61, 0.12);
+
+  --danger: #ef6a6a;
+  --ok: #3fa9f5;
+
+  color-scheme: dark;
+}
+
+:root[data-theme="highvis"] {
+  --bg: #000000;
+  --bg-elev-1: #141414;
+  --bg-elev-2: #1c1c1c;
+  --bg-elev-3: #262626;
+  --border: #3d3d3d;
+  --border-soft: #2a2a2a;
+
+  --text: #ffffff;
+  --text-dim: #d9d9d9;
+  --text-faint: #a6a6a6;
+
+  --accent: #ffb000;
+  --accent-dim: #cc8c00;
+  --accent-bg: rgba(255, 176, 0, 0.18);
+
+  --warn: #ffb000;
+  --warn-bg: rgba(255, 176, 0, 0.14);
+
+  --danger: #ff3b30;
+  --ok: #ffb000;
+
+  color-scheme: dark;
+}
+
+:root[data-theme="cyberpunk"] {
+  --bg: #0a0612;
+  --bg-elev-1: #150f24;
+  --bg-elev-2: #1d1433;
+  --bg-elev-3: #2a1b47;
+  --border: #4a2a6e;
+  --border-soft: #3a2159;
+
+  --text: #f0e6ff;
+  --text-dim: #b79fd9;
+  --text-faint: #7a5f9e;
+
+  --accent: #c026d3;
+  --accent-dim: #8b1ea3;
+  --accent-bg: rgba(192, 38, 211, 0.18);
+
+  --warn: #ff9d1f;
+  --warn-bg: rgba(255, 157, 31, 0.12);
+
+  --danger: #ff2f6e;
+  --ok: #c026d3;
+
+  color-scheme: dark;
+}
+
+:root[data-theme="8bit"] {
+  --bg: #000000;
+  --bg-elev-1: #0d1b0d;
+  --bg-elev-2: #142814;
+  --bg-elev-3: #1c3a1c;
+  --border: #3ca33c;
+  --border-soft: #2a7a2a;
+
+  --text: #a6ffa6;
+  --text-dim: #5fbf5f;
+  --text-faint: #3a8f3a;
+
+  --accent: #ffe100;
+  --accent-dim: #c7af00;
+  --accent-bg: rgba(255, 225, 0, 0.16);
+
+  --warn: #ff8800;
+  --warn-bg: rgba(255, 136, 0, 0.14);
+
+  --danger: #ff3030;
+  --ok: #30ff30;
+
+  color-scheme: dark;
+  font-family: "Courier New", Consolas, "Lucida Console", monospace;
 }
 
 ::-webkit-scrollbar {

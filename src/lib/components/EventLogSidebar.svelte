@@ -105,13 +105,6 @@
     transform: rotate(-90deg);
   }
 
-  .dot-icon {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--accent);
-  }
-
   h2 {
     margin: 0;
     font-size: 11px;

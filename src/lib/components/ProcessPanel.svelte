@@ -32,28 +32,6 @@
     flex-shrink: 0;
   }
 
-  .panel-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .dot-icon {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--accent);
-  }
-
-  h2 {
-    margin: 0;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-  }
-
   .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

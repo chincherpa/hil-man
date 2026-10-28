@@ -38,6 +38,36 @@ async fn get_user() -> Result<String, String> {
     .map_err(|e| e.to_string())?
 }
 
+#[tauri::command]
+async fn stop_realtime_application() -> Result<String, String> {
+    run_python_script("stop_realtime_application.py").await
+}
+
+/// Startet ein Skript aus `python/` und liefert stdout bzw. stderr als Fehler.
+async fn run_python_script(name: &'static str) -> Result<String, String> {
+    tauri::async_runtime::spawn_blocking(move || {
+        let script = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("..")
+            .join("python")
+            .join(name);
+
+        let output = Command::new("python")
+            .arg(&script)
+            // Umlaute in Meldungen unabhängig von der Konsolen-Codepage
+            .env("PYTHONIOENCODING", "utf-8")
+            .output()
+            .map_err(|e| e.to_string())?;
+
+        if output.status.success() {
+            Ok(String::from_utf8_lossy(&output.stdout).trim().to_string())
+        } else {
+            Err(String::from_utf8_lossy(&output.stderr).trim().to_string())
+        }
+    })
+    .await
+    .map_err(|e| e.to_string())?
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -59,6 +89,7 @@ pub fn run() {
         })
         .invoke_handler(tauri::generate_handler![
             get_user,
+            stop_realtime_application,
             event_log::log_event,
             event_log::get_events,
             settings::get_settings,

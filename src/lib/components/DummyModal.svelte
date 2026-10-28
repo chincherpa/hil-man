@@ -11,6 +11,12 @@
   /** @type {string | null} */
   let userError = $state(null);
 
+  let stopModelLoading = $state(false);
+  /** @type {string | null} */
+  let stopModelResult = $state(null);
+  /** @type {string | null} */
+  let stopModelError = $state(null);
+
   async function getUser() {
     loading = true;
     userResult = null;
@@ -21,6 +27,19 @@
       userError = String(err);
     } finally {
       loading = false;
+    }
+  }
+
+  async function stopModel() {
+    stopModelLoading = true;
+    stopModelResult = null;
+    stopModelError = null;
+    try {
+      stopModelResult = await invoke("stop_realtime_application");
+    } catch (err) {
+      stopModelError = String(err);
+    } finally {
+      stopModelLoading = false;
     }
   }
 
@@ -44,9 +63,25 @@
     {#if title === "ControlDesk"}
       <div class="grid">
         {#each controlDeskButtons as label}
-          <button class="cell">{label}</button>
+          {#if label === "Stop modell"}
+            <button class="cell" onclick={stopModel} disabled={stopModelLoading}>
+              {#if stopModelLoading}
+                <span class="spinner" role="status" aria-label="Lädt"></span>
+              {:else}
+                {label}
+              {/if}
+            </button>
+          {:else}
+            <button class="cell">{label}</button>
+          {/if}
         {/each}
       </div>
+
+      {#if stopModelError}
+        <div class="status-message error">{stopModelError}</div>
+      {:else if stopModelResult}
+        <div class="status-message">{stopModelResult}</div>
+      {/if}
 
       <section class="svn">
         <h3>SVN</h3>
@@ -264,6 +299,15 @@
   }
 
   .error {
+    color: var(--danger);
+  }
+
+  .status-message {
+    font-size: 12.5px;
+    color: var(--text-dim);
+  }
+
+  .status-message.error {
     color: var(--danger);
   }
 

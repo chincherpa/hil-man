@@ -1,9 +1,9 @@
 {
-  "Katana": {
-    "hil_name": "K-HiL_00_TestLutz",
-    "fea_folder": "K_HiL_00_TestLutz",
-    "pdx_file": "pdx_123.FULL",
-    "cluu_tb_config": "76rfvbnk-654edfg-65trghu7z6-rtz765t",
-    "vr_folder": "K_HiL_00_TestLutz"
+  "cp224077": {
+    "hil_name": "K-HiL_11_E4",
+    "fea_folder": "PO546 – Cayenne E4",
+    "pdx_file": "PO54X__16_01.FULL",
+    "cluu_tb": "832de9d5-d4f5-4f46-9e1c-bc1cdd2f98d4",
+    "cluu_tb_config": "89b325fa-c12c-43ca-8636-12affe41f48d"
   }
 }

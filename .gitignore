@@ -27,3 +27,5 @@ desktop.ini
 # Misc
 *.log
 *.tmp
+
+/KI-Tools
